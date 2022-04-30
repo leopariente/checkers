@@ -1,19 +1,19 @@
 .dark {
-    height: 100px;
-    width: 100px;
+    height: 70px;
+    width: 70px;
     background-color: rgb(102, 51, 0);
   }
   
   .light {
-    height: 100px;
-    width: 100px;
+    height: 80px;
+    width: 80px;
     background-color: rgb(227, 193, 111);
   }
   
   td {
     outline: black solid 2px;
     padding: 0;
-    position: relative;
+    text-align: center;
   }
   
   td:hover {
@@ -21,8 +21,8 @@
   }
 
   .outline-board {
-    height: 1000px;
-    width: 1000px;
+    height: 800px;
+    width: 800px;
     outline: black solid 2px;
     display: flex;
     justify-content: center;

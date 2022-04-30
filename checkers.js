@@ -1,3 +1,11 @@
+// function that adds an image to a cell
+function addImage(cell, type, name) {
+    const image = document.createElement("img");
+    image.src = "static/" + type + "/" + name + ".png";
+    image.draggable = false;
+    cell.appendChild(image);
+  }
+
 //function that makes the 8*8 board and initializes board
 function createBoard() {
   const board = document.createElement("div");
@@ -15,6 +23,12 @@ function createBoard() {
         cell.classList.add("light");
       } else {
         cell.classList.add("dark");
+        if (i < 3) {
+            addImage(table.rows[i].cells[j], "red", "piece");
+        }
+        if (i > 4) {
+            addImage(table.rows[i].cells[j], "white", "piece");
+        }
       }
       cell.addEventListener("click", () => onCellClick(i, j));
     }
