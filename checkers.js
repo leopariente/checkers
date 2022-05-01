@@ -1,6 +1,6 @@
 let boardData;
 let playingPiece;
-let capturedPiece;
+let moves;
 
 const board = document.createElement("div");
 board.classList.add("outline-board");
@@ -16,15 +16,14 @@ function addImage(cell, type, name) {
 
 function onCellClick(row, col) {
     if (table.rows[row].cells[col].classList.contains("potential")) {
-      boardData.makeMove(playingPiece, row, col);
+      boardData.makeMove(playingPiece, row, col, moves);
       boardData.switchMoves();
     }
     boardData.cleanCells();
   
   playingPiece = boardData.getPiece(row, col);
-  capturedPiece = undefined;
   if (playingPiece !== undefined && playingPiece.type === boardData.turn) {
-    let moves = playingPiece.getPossibleMoves(boardData);
+    moves = playingPiece.getPossibleMoves(boardData); 
     table.rows[playingPiece.row].cells[playingPiece.col].classList.add(
       "clicked"
     );

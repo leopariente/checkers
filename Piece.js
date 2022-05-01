@@ -25,7 +25,6 @@ class Piece {
   getPieceMoves(boardData) {
     let result = [];
     let direction = -1;
-    let jumpAvailable = false;
     if (this.type === "red") {
       direction = 1;
     }
@@ -33,20 +32,18 @@ class Piece {
       [direction * 1, 1],
       [direction * 1, -1],
     ];
-    for (let move of possibleMoves) {
-      let position = [this.row + move[0], this.col + move[1]];
-      if (boardData.isOponenent(position[0], position[1], this.type)) {
-        move[0] *= 2;
-        move[1] *= 2;
-        position = [this.row + move[0], this.col + move[1]];
-        if (boardData.isEmpty(position[0], position[1])) {
+    let jumps = boardData.getJumps(this, possibleMoves);
+    if (jumps.length === 0) {
+      for (let move of possibleMoves) {
+        let position = [this.row + move[0], this.col + move[1]];
+        if (
+          boardData.isEmpty(position[0], position[1])) {
           result.push(position);
-          jumpAvailable = true;
         }
       }
-      if (boardData.isEmpty(position[0], position[1]) && jumpAvailable === false) {
-        result.push(position);
-      }
+    }
+    for (let jump of jumps) {
+      result.push(jump);
     }
     return result;
   }

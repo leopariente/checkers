@@ -26,12 +26,18 @@ class BoardData {
     return false;
   }
   // function that moves the desired piece on the board and eats
-  makeMove(piece, row, col) {
-    if (capturedPiece !== undefined) {
-      table.rows[capturedPiece.row].cells[capturedPiece.col].removeChild(
-        table.rows[capturedPiece.row].cells[capturedPiece.col].firstElementChild
-      );
-    }
+  makeMove(piece, row, col, moves) {
+      let capturedPiece;
+    for (let move of moves) {
+        if (move[0] === row && move[1] === col && move.length === 3) {
+            capturedPiece = this.getPiece(move[2][0], move[2][1]);
+            table.rows[capturedPiece.row].cells[capturedPiece.col].removeChild(
+                table.rows[capturedPiece.row].cells[capturedPiece.col].firstElementChild
+              );
+            capturedPiece.row = undefined;
+            capturedPiece.col = undefined;
+        }
+    }  
     table.rows[piece.row].cells[piece.col].removeChild(
       table.rows[piece.row].cells[piece.col].firstElementChild
     );
@@ -47,6 +53,21 @@ class BoardData {
     } else {
       this.turn = "white";
     }
+  }
+
+  getJumps(piece, moves) {
+    let result = [];
+    for (let move of moves) {
+      let capturedPosition = [piece.row + move[0], piece.col + move[1]];
+      if (boardData.isOponenent(capturedPosition[0], capturedPosition[1], piece.type)) {
+        let jump = [move[0] * 2, move[1] * 2]
+        let jumpPosition = [piece.row + jump[0], piece.col + jump[1]];
+        if (boardData.isEmpty(jumpPosition[0], jumpPosition[1])) {
+          result.push([jumpPosition[0], jumpPosition[1], capturedPosition]);
+        }
+      }
+    }
+    return result;
   }
 
   cleanCells() {
