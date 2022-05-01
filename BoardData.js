@@ -29,13 +29,13 @@ class BoardData {
   }
   // function that moves the desired piece on the board and eats
   makeMove(piece, row, col, moves) {
-      let capturedPiece;
+    let capturedPiece;
     for (let move of moves) {
-        if (move[0] === row && move[1] === col && move.length === 3) {
-            capturedPiece = this.getPiece(move[2][0], move[2][1]);
-            this.removePiece(capturedPiece);
-        }
-    }  
+      if (move[0] === row && move[1] === col && move.length === 3) {
+        capturedPiece = this.getPiece(move[2][0], move[2][1]);
+        this.removePiece(capturedPiece);
+      }
+    }
     table.rows[piece.row].cells[piece.col].removeChild(
       table.rows[piece.row].cells[piece.col].firstElementChild
     );
@@ -53,14 +53,23 @@ class BoardData {
     }
   }
 
-  getJumps(piece, moves) {
+  getJumps(piece) {
     let result = [];
-    for (let move of moves) {
+    for (let move of piece.possibleMoves) {
       let capturedPosition = [piece.row + move[0], piece.col + move[1]];
-      if (boardData.isOponenent(capturedPosition[0], capturedPosition[1], piece.type)) {
-        let jump = [move[0] * 2, move[1] * 2]
+      if (
+        boardData.isOponenent(
+          capturedPosition[0],
+          capturedPosition[1],
+          piece.type
+        )
+      ) {
+        let jump = [move[0] * 2, move[1] * 2];
         let jumpPosition = [piece.row + jump[0], piece.col + jump[1]];
-        if (boardData.isEmpty(jumpPosition[0], jumpPosition[1])) {
+        if (
+          boardData.isEmpty(jumpPosition[0], jumpPosition[1]) &&
+          this.isInBoard(jumpPosition)
+        ) {
           result.push([jumpPosition[0], jumpPosition[1], capturedPosition]);
         }
       }
@@ -68,27 +77,50 @@ class BoardData {
     return result;
   }
 
+  checkJumpsAvailable() {
+    for (let piece of this.pieces) {
+      if (piece.type === this.turn) {
+        if (this.getJumps(piece).length !== 0) {
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
+  isInBoard(position) {
+    if (
+      position[0] >= 0 &&
+      position[0] <= 7 &&
+      position[1] >= 0 &&
+      position[1] <= 7
+    ) {
+      return true;
+    } else {
+      return false;
+    }
+  }
+
   removePiece(piece) {
     table.rows[piece.row].cells[piece.col].removeChild(
-        table.rows[piece.row].cells[piece.col].firstElementChild
-      );
-      piece.row = undefined;
-      piece.col = undefined;
-      if (piece.type === "red") {
-          this.redEaten++;
-      }
-      else {
-          this.whiteEaten++;
-      }
+      table.rows[piece.row].cells[piece.col].firstElementChild
+    );
+    piece.row = undefined;
+    piece.col = undefined;
+    if (piece.type === "red") {
+      this.redEaten++;
+    } else {
+      this.whiteEaten++;
+    }
   }
 
   checkWinner() {
-      if (this.redEaten === 12) {
-          this.winner = "white";
-      }
-      if (this.whiteEaten === 12) {
-          this.winner = "red";
-      }
+    if (this.redEaten === 12) {
+      this.winner = "white";
+    }
+    if (this.whiteEaten === 12) {
+      this.winner = "red";
+    }
   }
 
   cleanCells() {

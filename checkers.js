@@ -7,11 +7,12 @@ board.classList.add("outline-board");
 const table = document.createElement("table");
 
 function showWinnerDialogue() {
-    let winner = boardData.winner.charAt(0).toUpperCase() + boardData.winner.slice(1);
-    const winnerDialogue = document.createElement("div");
-    winnerDialogue.classList.add("winner");
-    winnerDialogue.textContent = winner + " Wins!";
-    board.appendChild(winnerDialogue);
+  let winner =
+    boardData.winner.charAt(0).toUpperCase() + boardData.winner.slice(1);
+  const winnerDialogue = document.createElement("div");
+  winnerDialogue.classList.add("winner");
+  winnerDialogue.textContent = winner + " Wins!";
+  board.appendChild(winnerDialogue);
 }
 
 // function that adds an image to a cell
@@ -23,25 +24,33 @@ function addImage(cell, type, name) {
 }
 
 function onCellClick(row, col) {
+  //this part of code is for the second click of a move, to move the piece to the desired tile
   if (table.rows[row].cells[col].classList.contains("potential")) {
     boardData.makeMove(playingPiece, row, col, moves);
     boardData.switchMoves();
   }
   boardData.cleanCells();
   boardData.checkWinner();
+
   if (boardData.winner === undefined) {
+    //this part of code is for the first click of a move, to show the possibilitiy movement of a piece
     playingPiece = boardData.getPiece(row, col);
     if (playingPiece !== undefined && playingPiece.type === boardData.turn) {
-      moves = playingPiece.getPossibleMoves(boardData);
-      table.rows[playingPiece.row].cells[playingPiece.col].classList.add(
-        "clicked"
-      );
-      for (let move of moves) {
-        table.rows[move[0]].cells[move[1]].classList.add("potential");
+      if (
+        (boardData.checkJumpsAvailable() &&
+          boardData.getJumps(playingPiece).length !== 0) ||
+        !boardData.checkJumpsAvailable()
+      ) {
+        moves = playingPiece.getPossibleMoves(boardData);
+        table.rows[playingPiece.row].cells[playingPiece.col].classList.add(
+          "clicked"
+        );
+        for (let move of moves) {
+          table.rows[move[0]].cells[move[1]].classList.add("potential");
+        }
       }
     }
-  }
-  else {
+  } else {
     showWinnerDialogue();
   }
 }
