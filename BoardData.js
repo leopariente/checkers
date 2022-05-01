@@ -27,7 +27,7 @@ class BoardData {
     }
     return false;
   }
-  // function that moves the desired piece on the board and eats
+  // function that moves the desired piece on the board and captures if needed
   makeMove(piece, row, col, moves) {
     let capturedPiece;
     for (let move of moves) {
@@ -53,6 +53,7 @@ class BoardData {
     }
   }
 
+  // function that returns a list of positions of a piece after capture and the position of the captured piece
   getJumps(piece) {
     let result = [];
     for (let move of piece.possibleMoves) {
@@ -77,6 +78,7 @@ class BoardData {
     return result;
   }
 
+  // function that return true if there are captures available for the current players turn
   checkJumpsAvailable() {
     for (let piece of this.pieces) {
       if (piece.type === this.turn) {
@@ -88,6 +90,7 @@ class BoardData {
     return false;
   }
 
+  // function checks if the absolute position is in the 8*8 board
   isInBoard(position) {
     if (
       position[0] >= 0 &&
@@ -101,6 +104,7 @@ class BoardData {
     }
   }
 
+  // remove captured piece from board and uppdates the score
   removePiece(piece) {
     table.rows[piece.row].cells[piece.col].removeChild(
       table.rows[piece.row].cells[piece.col].firstElementChild
@@ -113,7 +117,8 @@ class BoardData {
       this.whiteEaten++;
     }
   }
-
+ 
+  // updates the winner property if there is a winner
   checkWinner() {
     if (this.redEaten === 12) {
       this.winner = "white";
@@ -123,6 +128,7 @@ class BoardData {
     }
   }
 
+  // cleans the board from css, wont show the clicked and possible moves tiles
   cleanCells() {
     let cellList = document.querySelectorAll("td");
     for (let cell of cellList) {

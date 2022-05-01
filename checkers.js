@@ -18,7 +18,7 @@ function showWinnerDialogue() {
 // function that adds an image to a cell
 function addImage(cell, type, name) {
   const image = document.createElement("img");
-  image.src = "static/" + type + "/" + name + ".png";
+  image.src = "static/" + type + "/piece.png";
   image.draggable = false;
   cell.appendChild(image);
 }
@@ -59,7 +59,6 @@ function onCellClick(row, col) {
 function createBoard() {
   document.body.appendChild(board);
   board.appendChild(table);
-
   let result = [];
 
   for (let i = 0; i < 8; i++) {
@@ -72,11 +71,11 @@ function createBoard() {
         cell.classList.add("dark");
         if (i < 3) {
           addImage(table.rows[i].cells[j], "red", "piece");
-          result.push(new Piece(i, j, "red", "piece"));
+          result.push(new Piece(i, j, "red"));
         }
         if (i > 4) {
           addImage(table.rows[i].cells[j], "white", "piece");
-          result.push(new Piece(i, j, "white", "piece"));
+          result.push(new Piece(i, j, "white"));
         }
       }
       cell.addEventListener("click", () => onCellClick(i, j));

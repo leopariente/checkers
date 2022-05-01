@@ -3,7 +3,6 @@ class Piece {
     this.row = row;
     this.col = col;
     this.type = type;
-    this.name = "piece";
     this.possibleMoves = [
       [1, 1],
       [1, -1],
@@ -15,7 +14,7 @@ class Piece {
       ];
     }
   }
-
+  
   getPossibleMoves(boardData) {
     let moves = this.getPieceMoves(boardData);
     let filteredMoves = [];
@@ -26,10 +25,11 @@ class Piece {
     }
     return filteredMoves;
   }
-
+  
   getPieceMoves(boardData) {
     let result = [];
     let jumps = boardData.getJumps(this);
+    console.log(jumps);
     if (jumps.length === 0) {
       for (let move of this.possibleMoves) {
         let position = [this.row + move[0], this.col + move[1]];
