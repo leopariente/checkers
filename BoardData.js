@@ -25,15 +25,29 @@ class BoardData {
     }
     return false;
   }
-    // function that moves the desired piece on the board and eats
-    makeMove(piece, row, col) {
-        table.rows[piece.row].cells[piece.col].removeChild(
-          table.rows[piece.row].cells[piece.col].firstElementChild
-        );
-        addImage(table.rows[row].cells[col], piece.type, piece.name);
-        piece.row = row;
-        piece.col = col;
-      }
+  // function that moves the desired piece on the board and eats
+  makeMove(piece, row, col) {
+    if (capturedPiece !== undefined) {
+      table.rows[capturedPiece.row].cells[capturedPiece.col].removeChild(
+        table.rows[capturedPiece.row].cells[capturedPiece.col].firstElementChild
+      );
+    }
+    table.rows[piece.row].cells[piece.col].removeChild(
+      table.rows[piece.row].cells[piece.col].firstElementChild
+    );
+    addImage(table.rows[row].cells[col], piece.type, piece.name);
+    piece.row = row;
+    piece.col = col;
+  }
+
+  // function that switches turns between the white and black player
+  switchMoves() {
+    if (this.turn === "white") {
+      this.turn = "red";
+    } else {
+      this.turn = "white";
+    }
+  }
 
   cleanCells() {
     let cellList = document.querySelectorAll("td");
