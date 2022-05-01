@@ -1,4 +1,5 @@
 let boardData;
+let playingPiece;
 const board = document.createElement("div");
 board.classList.add("outline-board");
 const table = document.createElement("table");
@@ -12,12 +13,18 @@ function addImage(cell, type, name) {
 }
 
 function onCellClick(row, col) {
-  let piece = boardData.getPiece(row, col);
-  let moves = piece.getPossibleMoves(boardData);
-  console.log(moves);
+    if (playingPiece === undefined) {
+        boardData.cleanCells();
+      }  
+  playingPiece = boardData.getPiece(row, col);
+  if (playingPiece !== undefined) {
+  let moves = playingPiece.getPossibleMoves(boardData);
+  table.rows[playingPiece.row].cells[playingPiece.col].classList.add("clicked");
   for (let move of moves) {
     table.rows[move[0]].cells[move[1]].classList.add("potential");
   }
+  playingPiece = undefined;
+}
 }
 
 //function that makes the 8*8 board and initializes board
@@ -43,8 +50,8 @@ function createBoard() {
           addImage(table.rows[i].cells[j], "white", "piece");
           result.push(new Piece(i, j, "white", "piece"));
         }
-        cell.addEventListener("click", () => onCellClick(i, j));
       }
+      cell.addEventListener("click", () => onCellClick(i, j));
     }
   }
   boardData = new BoardData(result);

@@ -32,7 +32,9 @@ class Piece {
     }
     for (let move of possibleMoves) {
         let position = [this.row + move[0], this.col + move[1]];
+        if (boardData.isEmpty(position[0], position[1])) { 
           result.push(position);
+        }
       }
       return result;
   }

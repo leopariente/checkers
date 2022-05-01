@@ -13,4 +13,23 @@ class BoardData {
       }
     }
   }
+  // checks if tile is empty
+  isEmpty(row, col) {
+    return this.getPiece(row, col) === undefined;
+  }
+
+  // checks if tile is oponent
+  isOponenent(row, col, type) {
+    if (this.getPiece(row, col) !== undefined) {
+      return this.getPiece(row, col).type !== type;
+    }
+    return false;
+  }
+
+  cleanCells() {
+    let cellList = document.querySelectorAll("td");
+    for (let cell of cellList) {
+      cell.classList.remove("potential", "clicked");
+    }
+  }
 }
