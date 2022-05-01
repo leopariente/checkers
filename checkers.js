@@ -6,6 +6,14 @@ const board = document.createElement("div");
 board.classList.add("outline-board");
 const table = document.createElement("table");
 
+function showWinnerDialogue() {
+    let winner = boardData.winner.charAt(0).toUpperCase() + boardData.winner.slice(1);
+    const winnerDialogue = document.createElement("div");
+    winnerDialogue.classList.add("winner");
+    winnerDialogue.textContent = winner + " Wins!";
+    board.appendChild(winnerDialogue);
+}
+
 // function that adds an image to a cell
 function addImage(cell, type, name) {
   const image = document.createElement("img");
@@ -15,21 +23,26 @@ function addImage(cell, type, name) {
 }
 
 function onCellClick(row, col) {
-    if (table.rows[row].cells[col].classList.contains("potential")) {
-      boardData.makeMove(playingPiece, row, col, moves);
-      boardData.switchMoves();
+  if (table.rows[row].cells[col].classList.contains("potential")) {
+    boardData.makeMove(playingPiece, row, col, moves);
+    boardData.switchMoves();
+  }
+  boardData.cleanCells();
+  boardData.checkWinner();
+  if (boardData.winner === undefined) {
+    playingPiece = boardData.getPiece(row, col);
+    if (playingPiece !== undefined && playingPiece.type === boardData.turn) {
+      moves = playingPiece.getPossibleMoves(boardData);
+      table.rows[playingPiece.row].cells[playingPiece.col].classList.add(
+        "clicked"
+      );
+      for (let move of moves) {
+        table.rows[move[0]].cells[move[1]].classList.add("potential");
+      }
     }
-    boardData.cleanCells();
-  
-  playingPiece = boardData.getPiece(row, col);
-  if (playingPiece !== undefined && playingPiece.type === boardData.turn) {
-    moves = playingPiece.getPossibleMoves(boardData); 
-    table.rows[playingPiece.row].cells[playingPiece.col].classList.add(
-      "clicked"
-    );
-    for (let move of moves) {
-      table.rows[move[0]].cells[move[1]].classList.add("potential");
-    }
+  }
+  else {
+    showWinnerDialogue();
   }
 }
 

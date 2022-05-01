@@ -3,6 +3,8 @@ class BoardData {
     this.pieces = pieces;
     this.turn = "white";
     this.winner = undefined;
+    this.redEaten = 0;
+    this.whiteEaten = 0;
   }
 
   // function that recieves a tile on board and returns the piece that is on it.
@@ -31,11 +33,7 @@ class BoardData {
     for (let move of moves) {
         if (move[0] === row && move[1] === col && move.length === 3) {
             capturedPiece = this.getPiece(move[2][0], move[2][1]);
-            table.rows[capturedPiece.row].cells[capturedPiece.col].removeChild(
-                table.rows[capturedPiece.row].cells[capturedPiece.col].firstElementChild
-              );
-            capturedPiece.row = undefined;
-            capturedPiece.col = undefined;
+            this.removePiece(capturedPiece);
         }
     }  
     table.rows[piece.row].cells[piece.col].removeChild(
@@ -68,6 +66,29 @@ class BoardData {
       }
     }
     return result;
+  }
+
+  removePiece(piece) {
+    table.rows[piece.row].cells[piece.col].removeChild(
+        table.rows[piece.row].cells[piece.col].firstElementChild
+      );
+      piece.row = undefined;
+      piece.col = undefined;
+      if (piece.type === "red") {
+          this.redEaten++;
+      }
+      else {
+          this.whiteEaten++;
+      }
+  }
+
+  checkWinner() {
+      if (this.redEaten === 12) {
+          this.winner = "white";
+      }
+      if (this.whiteEaten === 12) {
+          this.winner = "red";
+      }
   }
 
   cleanCells() {
