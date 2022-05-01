@@ -1,19 +1,31 @@
+let boardData;
+const board = document.createElement("div");
+board.classList.add("outline-board");
+const table = document.createElement("table");
+
 // function that adds an image to a cell
 function addImage(cell, type, name) {
-    const image = document.createElement("img");
-    image.src = "static/" + type + "/" + name + ".png";
-    image.draggable = false;
-    cell.appendChild(image);
+  const image = document.createElement("img");
+  image.src = "static/" + type + "/" + name + ".png";
+  image.draggable = false;
+  cell.appendChild(image);
+}
+
+function onCellClick(row, col) {
+  let piece = boardData.getPiece(row, col);
+  let moves = piece.getPossibleMoves(boardData);
+  console.log(moves);
+  for (let move of moves) {
+    table.rows[move[0]].cells[move[1]].classList.add("potential");
   }
+}
 
 //function that makes the 8*8 board and initializes board
 function createBoard() {
-  const board = document.createElement("div");
-  board.classList.add("outline-board");
   document.body.appendChild(board);
-
-  const table = document.createElement("table");
   board.appendChild(table);
+
+  let result = [];
 
   for (let i = 0; i < 8; i++) {
     let row = table.insertRow(i);
@@ -24,17 +36,18 @@ function createBoard() {
       } else {
         cell.classList.add("dark");
         if (i < 3) {
-            addImage(table.rows[i].cells[j], "red", "piece");
+          addImage(table.rows[i].cells[j], "red", "piece");
+          result.push(new Piece(i, j, "red", "piece"));
         }
         if (i > 4) {
-            addImage(table.rows[i].cells[j], "white", "piece");
+          addImage(table.rows[i].cells[j], "white", "piece");
+          result.push(new Piece(i, j, "white", "piece"));
         }
+        cell.addEventListener("click", () => onCellClick(i, j));
       }
-      cell.addEventListener("click", () => onCellClick(i, j));
     }
   }
+  boardData = new BoardData(result);
 }
-
-function onCellClick() {}
 
 window.addEventListener("load", createBoard);

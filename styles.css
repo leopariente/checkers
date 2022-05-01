@@ -9,10 +9,14 @@
     width: 80px;
     background-color: rgb(227, 193, 111);
   }
+
+  .potential {
+    background-color: rgb(228, 143, 57);
+  }
   
   td {
     outline: black solid 2px;
-    padding: 0;
+    padding: 0px;
     text-align: center;
   }
   
