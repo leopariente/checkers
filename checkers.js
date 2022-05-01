@@ -13,18 +13,21 @@ function addImage(cell, type, name) {
 }
 
 function onCellClick(row, col) {
-    if (playingPiece === undefined) {
-        boardData.cleanCells();
-      }  
+    if (table.rows[row].cells[col].classList.contains("potential")) {
+      boardData.makeMove(playingPiece, row, col);
+    }
+    boardData.cleanCells();
+  
   playingPiece = boardData.getPiece(row, col);
   if (playingPiece !== undefined) {
-  let moves = playingPiece.getPossibleMoves(boardData);
-  table.rows[playingPiece.row].cells[playingPiece.col].classList.add("clicked");
-  for (let move of moves) {
-    table.rows[move[0]].cells[move[1]].classList.add("potential");
+    let moves = playingPiece.getPossibleMoves(boardData);
+    table.rows[playingPiece.row].cells[playingPiece.col].classList.add(
+      "clicked"
+    );
+    for (let move of moves) {
+      table.rows[move[0]].cells[move[1]].classList.add("potential");
+    }
   }
-  playingPiece = undefined;
-}
 }
 
 //function that makes the 8*8 board and initializes board

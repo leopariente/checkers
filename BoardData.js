@@ -25,6 +25,15 @@ class BoardData {
     }
     return false;
   }
+    // function that moves the desired piece on the board and eats
+    makeMove(piece, row, col) {
+        table.rows[piece.row].cells[piece.col].removeChild(
+          table.rows[piece.row].cells[piece.col].firstElementChild
+        );
+        addImage(table.rows[row].cells[col], piece.type, piece.name);
+        piece.row = row;
+        piece.col = col;
+      }
 
   cleanCells() {
     let cellList = document.querySelectorAll("td");
