@@ -1,6 +1,5 @@
 let boardData;
 let playingPiece;
-let moves;
 
 const board = document.createElement("div");
 board.classList.add("outline-board");
@@ -26,7 +25,7 @@ function addImage(cell, type, name) {
 function onCellClick(row, col) {
   //this part of code is for the second click of a move, to move the piece to the desired tile
   if (table.rows[row].cells[col].classList.contains("potential")) {
-    boardData.makeMove(playingPiece, row, col, moves);
+    boardData.makeMove(playingPiece, row, col);
     boardData.switchMoves();
   }
   boardData.cleanCells();
@@ -41,11 +40,11 @@ function onCellClick(row, col) {
           boardData.getJumps(playingPiece).length !== 0) ||
         !boardData.checkJumpsAvailable()
       ) {
-        moves = playingPiece.getPossibleMoves(boardData);
+        let possibleMoves = playingPiece.getPossibleMoves(boardData);
         table.rows[playingPiece.row].cells[playingPiece.col].classList.add(
           "clicked"
         );
-        for (let move of moves) {
+        for (let move of possibleMoves) {
           table.rows[move[0]].cells[move[1]].classList.add("potential");
         }
       }

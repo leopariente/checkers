@@ -5,6 +5,7 @@ class BoardData {
     this.winner = undefined;
     this.redEaten = 0;
     this.whiteEaten = 0;
+    this.capturedPiece = undefined;
   }
 
   // function that recieves a tile on board and returns the piece that is on it.
@@ -28,14 +29,11 @@ class BoardData {
     return false;
   }
   // function that moves the desired piece on the board and captures if needed
-  makeMove(piece, row, col, moves) {
-    let capturedPiece;
-    for (let move of moves) {
-      if (move[0] === row && move[1] === col && move.length === 3) {
-        capturedPiece = this.getPiece(move[2][0], move[2][1]);
-        this.removePiece(capturedPiece);
-      }
-    }
+  makeMove(piece, row, col) {
+        if (this.capturedPiece !== undefined) {
+          this.removePiece(this.capturedPiece);
+        }
+    
     table.rows[piece.row].cells[piece.col].removeChild(
       table.rows[piece.row].cells[piece.col].firstElementChild
     );
@@ -53,26 +51,23 @@ class BoardData {
     }
   }
 
-  // function that returns a list of positions of a piece after capture and the position of the captured piece
+  // function that returns a list of positions of a piece after capture
   getJumps(piece) {
     let result = [];
+    let capturedPiece;
     for (let move of piece.possibleMoves) {
-      let capturedPosition = [piece.row + move[0], piece.col + move[1]];
+      let position = [piece.row + move[0], piece.col + move[1]];
+      if (this.isOponenent(position[0], position[1], piece.type)) {
+      capturedPiece = this.getPiece(position[0], position[1]);
+      let jump = [move[0] * 2, move[1] * 2];
+      let jumpPosition = [piece.row + jump[0], piece.col + jump[1]];
       if (
-        boardData.isOponenent(
-          capturedPosition[0],
-          capturedPosition[1],
-          piece.type
-        )
+        boardData.isEmpty(jumpPosition[0], jumpPosition[1]) &&
+        this.isInBoard(jumpPosition)
       ) {
-        let jump = [move[0] * 2, move[1] * 2];
-        let jumpPosition = [piece.row + jump[0], piece.col + jump[1]];
-        if (
-          boardData.isEmpty(jumpPosition[0], jumpPosition[1]) &&
-          this.isInBoard(jumpPosition)
-        ) {
-          result.push([jumpPosition[0], jumpPosition[1], capturedPosition]);
-        }
+        this.capturedPiece = capturedPiece;
+        result.push([jumpPosition[0], jumpPosition[1]]);
+      }
       }
     }
     return result;
@@ -116,8 +111,9 @@ class BoardData {
     } else {
       this.whiteEaten++;
     }
+    this.capturedPiece = undefined;
   }
- 
+
   // updates the winner property if there is a winner
   checkWinner() {
     if (this.redEaten === 12) {

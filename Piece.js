@@ -29,7 +29,6 @@ class Piece {
   getPieceMoves(boardData) {
     let result = [];
     let jumps = boardData.getJumps(this);
-    console.log(jumps);
     if (jumps.length === 0) {
       for (let move of this.possibleMoves) {
         let position = [this.row + move[0], this.col + move[1]];
