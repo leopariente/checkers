@@ -34,7 +34,7 @@ class Piece {
     return result;
   }
 
-    // function that returns a list of possible jumps with the captured piece
+    // function that returns a list of possible jumps. Also changes piecesInDanger 
     getJumps() {
         let piecesInDanger = [];
         let result = [];

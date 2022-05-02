@@ -33,6 +33,13 @@ function onCellClick(row, col) {
 
   if (winner === undefined) {
     //this part of code is for the first click of a move, to show the possibilitiy movement of a piece
+    tryMove(row, col);
+  } else {
+    showWinnerDialogue();
+  }
+}
+
+function tryMove(row, col) {
     playingPiece = boardData.getPiece(row, col);
     if (playingPiece !== undefined && playingPiece.type === boardData.turn) {
       if (
@@ -49,9 +56,6 @@ function onCellClick(row, col) {
         }
       }
     }
-  } else {
-    showWinnerDialogue();
-  }
 }
 
 //function that makes the 8*8 board and initializes board
