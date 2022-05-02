@@ -29,15 +29,15 @@ function onCellClick(row, col) {
     boardData.switchMoves();
   }
   boardData.cleanCells();
-  boardData.checkWinner();
+  let winner = boardData.checkWinner();
 
-  if (boardData.winner === undefined) {
+  if (winner === undefined) {
     //this part of code is for the first click of a move, to show the possibilitiy movement of a piece
     playingPiece = boardData.getPiece(row, col);
     if (playingPiece !== undefined && playingPiece.type === boardData.turn) {
       if (
         (boardData.checkJumpsAvailable() &&
-          boardData.getJumps(playingPiece).length !== 0) ||
+          playingPiece.getJumps().length !== 0) ||
         !boardData.checkJumpsAvailable()
       ) {
         let possibleMoves = playingPiece.getPossibleMoves(boardData);
@@ -70,11 +70,11 @@ function createBoard() {
         cell.classList.add("dark");
         if (i < 3) {
           addImage(table.rows[i].cells[j], "red", "piece");
-          result.push(new Piece(i, j, "red"));
+          result.push(new Piece(i, j, "red", [[1, 1], [1, -1]]));
         }
         if (i > 4) {
           addImage(table.rows[i].cells[j], "white", "piece");
-          result.push(new Piece(i, j, "white"));
+          result.push(new Piece(i, j, "white", [[-1, 1], [-1, -1]]));
         }
       }
       cell.addEventListener("click", () => onCellClick(i, j));

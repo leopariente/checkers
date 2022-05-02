@@ -5,7 +5,7 @@ class BoardData {
     this.winner = undefined;
     this.redEaten = 0;
     this.whiteEaten = 0;
-    this.capturedPiece = undefined;
+    this.pieceInDanger = [];
   }
 
   // function that recieves a tile on board and returns the piece that is on it.
@@ -30,10 +30,13 @@ class BoardData {
   }
   // function that moves the desired piece on the board and captures if needed
   makeMove(piece, row, col) {
-        if (this.capturedPiece !== undefined) {
-          this.removePiece(this.capturedPiece);
+    if (this.pieceInDanger.length !== 0) {
+        for (let piece of this.pieceInDanger) {
+            if (row === piece[1][0] && col === piece[1][1]) {
+                this.removePiece(piece[0]);
+            }
         }
-    
+    }
     table.rows[piece.row].cells[piece.col].removeChild(
       table.rows[piece.row].cells[piece.col].firstElementChild
     );
@@ -51,33 +54,11 @@ class BoardData {
     }
   }
 
-  // function that returns a list of positions of a piece after capture
-  getJumps(piece) {
-    let result = [];
-    let capturedPiece;
-    for (let move of piece.possibleMoves) {
-      let position = [piece.row + move[0], piece.col + move[1]];
-      if (this.isOponenent(position[0], position[1], piece.type)) {
-      capturedPiece = this.getPiece(position[0], position[1]);
-      let jump = [move[0] * 2, move[1] * 2];
-      let jumpPosition = [piece.row + jump[0], piece.col + jump[1]];
-      if (
-        boardData.isEmpty(jumpPosition[0], jumpPosition[1]) &&
-        this.isInBoard(jumpPosition)
-      ) {
-        this.capturedPiece = capturedPiece;
-        result.push([jumpPosition[0], jumpPosition[1]]);
-      }
-      }
-    }
-    return result;
-  }
-
   // function that return true if there are captures available for the current players turn
   checkJumpsAvailable() {
     for (let piece of this.pieces) {
       if (piece.type === this.turn) {
-        if (this.getJumps(piece).length !== 0) {
+        if (piece.getJumps().length !== 0) {
           return true;
         }
       }
@@ -111,16 +92,16 @@ class BoardData {
     } else {
       this.whiteEaten++;
     }
-    this.capturedPiece = undefined;
+    this.pieceInDanger = undefined;
   }
 
   // updates the winner property if there is a winner
   checkWinner() {
     if (this.redEaten === 12) {
-      this.winner = "white";
+      return "white";
     }
     if (this.whiteEaten === 12) {
-      this.winner = "red";
+      return "red";
     }
   }
 
