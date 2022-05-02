@@ -1,9 +1,10 @@
 class Piece {
-  constructor(row, col, type, possibleMoves) {
+  constructor(row, col, type, possibleMoves, name) {
     this.row = row;
     this.col = col;
     this.type = type;
     this.possibleMoves = possibleMoves;
+    this.name = name;
   }
 
   getPossibleMoves(boardData) {
@@ -29,14 +30,13 @@ class Piece {
       }
     }
     for (let jump of jumps) {
-      result.push(jump);
+      result.push(jump[1]);
     }
     return result;
   }
 
-    // function that returns a list of possible jumps. Also changes piecesInDanger 
+    // function that returns a list of possible jumps with the piece they capture 
     getJumps() {
-        let piecesInDanger = [];
         let result = [];
         let pieceInDanger;
         for (let move of this.possibleMoves) {
@@ -50,12 +50,10 @@ class Piece {
               boardData.isInBoard(jumpPosition)
             ) {
                 //pushes the piece in danger and the position after capture
-              piecesInDanger.push([boardData.getPiece(position[0], position[1]), jumpPosition]);
-              result.push([jumpPosition[0], jumpPosition[1]]);
+              result.push([pieceInDanger, jumpPosition]);
             }
           }
         }
-        boardData.pieceInDanger = piecesInDanger;
         return result;
       }
 }

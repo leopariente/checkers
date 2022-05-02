@@ -2,10 +2,8 @@ class BoardData {
   constructor(pieces) {
     this.pieces = pieces;
     this.turn = "white";
-    this.winner = undefined;
     this.redEaten = 0;
     this.whiteEaten = 0;
-    this.pieceInDanger = [];
   }
 
   // function that recieves a tile on board and returns the piece that is on it.
@@ -30,12 +28,13 @@ class BoardData {
   }
   // function that moves the desired piece on the board and captures if needed
   makeMove(piece, row, col) {
-    if (this.pieceInDanger.length !== 0) {
-        for (let piece of this.pieceInDanger) {
-            if (row === piece[1][0] && col === piece[1][1]) {
-                this.removePiece(piece[0]);
-            }
+    let jumps = piece.getJumps();
+    if (jumps.length !== 0) {
+      for (let piece of jumps) {
+        if (row === piece[1][0] && col === piece[1][1]) {
+          this.removePiece(piece[0]);
         }
+      }
     }
     table.rows[piece.row].cells[piece.col].removeChild(
       table.rows[piece.row].cells[piece.col].firstElementChild
@@ -98,10 +97,10 @@ class BoardData {
   // updates the winner property if there is a winner
   checkWinner() {
     if (this.redEaten === 12) {
-      return "white";
+      return "White";
     }
     if (this.whiteEaten === 12) {
-      return "red";
+      return "Red";
     }
   }
 

@@ -5,9 +5,7 @@ const board = document.createElement("div");
 board.classList.add("outline-board");
 const table = document.createElement("table");
 
-function showWinnerDialogue() {
-  let winner =
-    boardData.winner.charAt(0).toUpperCase() + boardData.winner.slice(1);
+function showWinnerDialogue(winner) {
   const winnerDialogue = document.createElement("div");
   winnerDialogue.classList.add("winner");
   winnerDialogue.textContent = winner + " Wins!";
@@ -35,7 +33,7 @@ function onCellClick(row, col) {
     //this part of code is for the first click of a move, to show the possibilitiy movement of a piece
     tryMove(row, col);
   } else {
-    showWinnerDialogue();
+    showWinnerDialogue(winner);
   }
 }
 
@@ -74,11 +72,11 @@ function createBoard() {
         cell.classList.add("dark");
         if (i < 3) {
           addImage(table.rows[i].cells[j], "red", "piece");
-          result.push(new Piece(i, j, "red", [[1, 1], [1, -1]]));
+          result.push(new Piece(i, j, "red", [[1, 1], [1, -1]], "piece"));
         }
         if (i > 4) {
           addImage(table.rows[i].cells[j], "white", "piece");
-          result.push(new Piece(i, j, "white", [[-1, 1], [-1, -1]]));
+          result.push(new Piece(i, j, "white", [[-1, 1], [-1, -1]], "piece"));
         }
       }
       cell.addEventListener("click", () => onCellClick(i, j));
