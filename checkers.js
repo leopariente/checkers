@@ -8,7 +8,7 @@ const table = document.createElement("table");
 function showWinnerDialogue(winner) {
   const winnerDialogue = document.createElement("div");
   winnerDialogue.classList.add("winner");
-  winnerDialogue.textContent = winner + " Wins!";
+  winnerDialogue.textContent = winner;
   board.appendChild(winnerDialogue);
 }
 

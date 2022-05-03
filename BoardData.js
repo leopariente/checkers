@@ -65,6 +65,18 @@ class BoardData {
     return false;
   }
 
+  checkMovesAvailable() {
+    for (let piece of this.pieces) {
+      if (piece.type === this.turn) {
+        if (piece.getPossibleMoves(boardData).length !== 0) {
+          console.log("tie");
+          return true;
+        }
+      }
+    }
+    return false;
+  }
+
   // function checks if the absolute position is in the 8*8 board
   isInBoard(position) {
     if (
@@ -96,10 +108,13 @@ class BoardData {
   // returns winner if there is a winner
   checkWinner() {
     if (this.redEaten === 12) {
-      return "White";
+      return "White Wins!";
     }
     if (this.whiteEaten === 12) {
-      return "Red";
+      return "Red Wins!";
+    }
+    if (!this.checkMovesAvailable()) {
+      return "It's a Tie!"
     }
   }
 
