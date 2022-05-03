@@ -69,7 +69,6 @@ class BoardData {
     for (let piece of this.pieces) {
       if (piece.type === this.turn) {
         if (piece.getPossibleMoves(boardData).length !== 0) {
-          console.log("tie");
           return true;
         }
       }
