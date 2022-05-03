@@ -41,8 +41,7 @@ function tryMove(row, col) {
     playingPiece = boardData.getPiece(row, col);
     if (playingPiece !== undefined && playingPiece.type === boardData.turn) {
       if (
-        (boardData.checkJumpsAvailable() &&
-          playingPiece.getJumps().length !== 0) ||
+        (playingPiece.getJumps().length !== 0) ||
         !boardData.checkJumpsAvailable()
       ) {
         let possibleMoves = playingPiece.getPossibleMoves(boardData);

@@ -91,10 +91,9 @@ class BoardData {
     } else {
       this.whiteEaten++;
     }
-    this.pieceInDanger = undefined;
   }
 
-  // updates the winner property if there is a winner
+  // returns winner if there is a winner
   checkWinner() {
     if (this.redEaten === 12) {
       return "White";
