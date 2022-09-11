@@ -1,0 +1,25 @@
+{
+  "name": "checkers",
+  "version": "1.0.0",
+  "description": "The final project for the cyber4s pre course. A game of checkers.",
+  "main": "checkers.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/leopariente/checkers.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/leopariente/checkers/issues"
+  },
+  "homepage": "https://github.com/leopariente/checkers#readme",
+  "dependencies": {
+    "express": "^4.18.1",
+    "path": "^0.12.7"
+  }
+}
